@@ -11,20 +11,20 @@ from config import USERNAME, TOKEN, REPO_OWNER, REPO_NAME
 def make_github_issue(title, body=None, assignee=USERNAME, closed=False, labels=[]):
     # Create an issue on github.com using the given parameters
     # Url to create issues via POST
-    url = 'https://api.github.com/repos/%s/%s/import/issues' % (REPO_OWNER, REPO_NAME)
+    url = 'https://api.github.com/repos/%s/%s/issues' % (REPO_OWNER, REPO_NAME)
 
     # Headers
     headers = {
-        "Authorization": "token %s" % TOKEN,
-        "Accept": "application/vnd.github.golden-comet-preview+json"
+        "Authorization": "Bearer %s" % TOKEN,
+        "Accept": "application/vnd.github+json"
     }
 
     # Create our issue
-    data = {'issue': {'title': title,
+    data = {'title': title,
                       'body': body,
                       'assignee': assignee,
                       'closed': closed,
-                      'labels': labels}}
+                      'labels': labels}
 
     payload = json.dumps(data)
 

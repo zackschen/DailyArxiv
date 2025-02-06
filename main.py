@@ -1,4 +1,3 @@
-import numpy as np
 import os
 import re
 import datetime
@@ -24,7 +23,8 @@ now = datetime.now(pytz.utc)
 yesterday = now - timedelta(days=1.1)
 
 openai.api_key = "sk-4LGwzEGZgXtr4onW2616D6BfCe2945B190Bd6299Cc1fCd14"
-openai.base_url = "https://api.gpt.ge/v1/"
+openai.base_url = "https://api.vveai.com/"
+openai.api_base = "https://api.vveai.com/v1"
 openai.default_headers = {"x-foo": "true"}
 
 # 定义Reader类
@@ -301,7 +301,7 @@ class Reader:
                  """.format(self.language, self.language)},
             ]
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4o-mini",
             # prompt需要用英语替换，少占用token。
             messages=messages,
         )
@@ -311,8 +311,7 @@ class Reader:
         print("conclusion_result:\n", result)
         print("prompt_token_used:", response.usage.prompt_tokens,
               "completion_token_used:", response.usage.completion_tokens,
-              "total_token_used:", response.usage.total_tokens)
-        print("response_time:", response.response_ms/1000.0, 's')             
+              "total_token_used:", response.usage.total_tokens)           
         return result            
     
     @tenacity.retry(wait=tenacity.wait_exponential(multiplier=1, min=4, max=10),
@@ -345,7 +344,7 @@ class Reader:
                  """.format(self.language, self.language)},
             ]
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4o-mini",
             messages=messages,
         )
         result = ''
@@ -355,7 +354,6 @@ class Reader:
         print("prompt_token_used:", response.usage.prompt_tokens,
               "completion_token_used:", response.usage.completion_tokens,
               "total_token_used:", response.usage.total_tokens)
-        print("response_time:", response.response_ms/1000.0, 's') 
         return result
     
     @tenacity.retry(wait=tenacity.wait_exponential(multiplier=1, min=4, max=10),
@@ -391,7 +389,7 @@ class Reader:
             ]
                 
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4o-mini",
             messages=messages,
         )
         result = ''
@@ -400,8 +398,7 @@ class Reader:
         print("summary_result:\n", result)
         print("prompt_token_used:", response.usage.prompt_tokens,
               "completion_token_used:", response.usage.completion_tokens,
-              "total_token_used:", response.usage.total_tokens)
-        print("response_time:", response.response_ms/1000.0, 's')                    
+              "total_token_used:", response.usage.total_tokens)                   
         return result      
 
     # 定义一个方法，打印出读者信息
@@ -433,6 +430,7 @@ def export_to_markdown(text, file_name, mode='w'):
 
 def main(args):       
     # 创建一个Reader对象，并调用show_info方法
+    All_paper_list = []
     if args.sort == 'Relevance':
         sort = arxiv.SortCriterion.Relevance
     elif args.sort == 'LastUpdatedDate':
@@ -487,10 +485,14 @@ def main(args):
                             )
             reader1.show_info()
             filter_results = reader1.filter_arxiv(max_results=args.max_results)
-            paper_list = reader1.download_pdf(filter_results)
-            reader1.summary_with_chat(paper_list=paper_list, htmls=htmls)
-            # htmls.append("#######test#########")
-            htmls_body += htmls
+            for index, result in enumerate(filter_results):
+                if result.entry_id in All_paper_list:
+                    continue
+                All_paper_list.append(result.entry_id)
+                paper_list = reader1.download_pdf([result])
+                reader1.summary_with_chat(paper_list=paper_list, htmls=htmls)
+                # htmls.append("#######test#########")
+                htmls_body += htmls
         save_to_file(htmls_body, date_str=title, root_path='./')
         make_github_issue(title=title, body="\n".join(htmls_body), labels=args.filter_keys)
 
