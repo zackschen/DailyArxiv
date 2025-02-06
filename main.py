@@ -23,6 +23,9 @@ import pytz
 now = datetime.now(pytz.utc)
 yesterday = now - timedelta(days=1.1)
 
+openai.api_key = "sk-4LGwzEGZgXtr4onW2616D6BfCe2945B190Bd6299Cc1fCd14"
+openai.base_url = "https://api.gpt.ge/v1/"
+openai.default_headers = {"x-foo": "true"}
 
 # 定义Reader类
 class Reader:

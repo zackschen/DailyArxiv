@@ -5,19 +5,18 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 # Authentication for user filing issue (must have read/write access to repository to add issue to)
-USERNAME = ''
-TOKEN = ''
+USERNAME = 'zackschen'
+TOKEN = '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'
 
 # The repository to add this issue to
-REPO_OWNER = ''
-REPO_NAME = ''
+REPO_OWNER = 'zackschen'
+REPO_NAME = 'DailyArxiv'
 
 # Set new submission url of subject
 NEW_SUB_URL = 'https://arxiv.org/list/cs/new'
 
 # Keywords to search
-KEYWORD_LIST = ["", ]
+KEYWORD_LIST = ["Continual Learning", "Lifelong Learning", "Incremental Learning", ]
 
-
-OPENAI_API_KEYS = ['', ]
+OPENAI_API_KEYS = ['sk-KGBAkbwmphOjwbdt1b78A5B86c2340EbBfCb2a5598E00479']
 LANGUAGE = "zh"  # zh | en
