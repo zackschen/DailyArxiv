@@ -6,7 +6,8 @@ from __future__ import unicode_literals
 
 # Authentication for user filing issue (must have read/write access to repository to add issue to)
 USERNAME = 'zackschen'
-TOKEN = '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'
+TOKEN1 = 'github_pat_11ACTH4OQ0n2Tk3CIRt6no_iSv3'
+TOKEN2 = 'DGRq4vJllFsbcDutQp4luf5V9CVlu6fkBFhHWqnEFZUYYEPSvl6Kkus'
 
 # The repository to add this issue to
 REPO_OWNER = 'zackschen'

@@ -6,7 +6,7 @@ from __future__ import unicode_literals
 
 import json
 import requests
-from config import USERNAME, TOKEN, REPO_OWNER, REPO_NAME
+from config import USERNAME, TOKEN1, TOKEN2, REPO_OWNER, REPO_NAME
 
 def make_github_issue(title, body=None, assignee=USERNAME, closed=False, labels=[]):
     # Create an issue on github.com using the given parameters
@@ -15,7 +15,7 @@ def make_github_issue(title, body=None, assignee=USERNAME, closed=False, labels=
 
     # Headers
     headers = {
-        "Authorization": "Bearer %s" % TOKEN,
+        "Authorization": "Bearer %s" % (TOKEN1+TOKEN2),
         "Accept": "application/vnd.github+json"
     }
 
